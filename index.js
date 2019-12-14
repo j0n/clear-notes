@@ -13,6 +13,8 @@ app.use(cors())
 app.use(fileUpload({
     limits: { fileSize: 50 * 1024 * 1024 },
 }));
+app.use(express.static('static'))
+
 app.post('/image', async (req, res) => {
   const { file } = req.files;
   await add(`tmp/${file.name}`, `Uploading ${file.name}`, file.data.toString('base64'));
