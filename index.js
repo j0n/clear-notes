@@ -6,7 +6,9 @@ const fileUpload = require('express-fileupload');
 const bodyParser = require('body-parser');
 
 
-const { add, get } = require('./lib/github');
+const { add, get, list } = require('./lib/github');
+const { GITHUB_PATH = 'note' } = process.env;
+
 const app = express();
 app.use(bodyParser.json());
 app.use(cors())
@@ -17,12 +19,12 @@ app.use(express.static('static'))
 
 app.post('/image', async (req, res) => {
   const { file } = req.files;
-  await add(`tmp/${file.name}`, `Uploading ${file.name}`, file.data.toString('base64'));
+  await add(`image/${file.name}`, `Uploading ${file.name}`, file.data.toString('base64'));
 })
-app.get('/note/:file', async (req, res) => {
+app.get(`/${GITHUB_PATH}/:file`, async (req, res) => {
   const { file } = req.params;
   try {
-    const content = await get(`note/${file}`)
+    const content = await get(`${GITHUB_PATH}/${file}`)
     console.log({content});
     res.json({content});
   } catch (err) {
@@ -30,15 +32,22 @@ app.get('/note/:file', async (req, res) => {
     res.json({content: ''});
   }
 })
-app.post('/note/:file', async (req, res) => {
+app.get('/list', async (req, res) => {
+  try {
+    const files = await list();
+    res.send(files);
+  } catch(err) {
+    res.send(err);
+  }
+})
+app.post(`/${GITHUB_PATH}/:file`, async (req, res) => {
   const { file } = req.params;
   const { content = '' } = req.body;
   try {
-    await add(`note/${file}`, `upsert ${file}`, btoa(content));
+    await add(`${GITHUB_PATH}/${file}`, `upsert ${file}`, btoa(content));
     res.send('done');
   } catch(err) {
     res.send(err);
   }
 })
 app.listen(process.env.PORT || 7764)
-// add();
