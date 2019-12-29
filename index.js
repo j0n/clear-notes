@@ -4,9 +4,10 @@ const express = require('express');
 const cors = require('cors');
 const fileUpload = require('express-fileupload');
 const bodyParser = require('body-parser');
+const hearsayAdmin = require('./routes/hearsay-admin');
 
 
-const { add, get, list } = require('./lib/github');
+const { add, get, list } = require('./lib/github')('j0n', 'notes');
 const { GITHUB_PATH = 'note' } = process.env;
 
 const app = express();
@@ -25,17 +26,15 @@ app.get(`/${GITHUB_PATH}/:file`, async (req, res) => {
   const { file } = req.params;
   try {
     const content = await get(`${GITHUB_PATH}/${file}`)
-    console.log({content});
     res.json({content});
   } catch (err) {
-    console.log(err);
     res.json({content: ''});
   }
 })
 app.get('/list', async (req, res) => {
   try {
-    const files = await list();
-    res.send(files);
+    const files = await list(`/${GITHUB_PATH}`);
+    res.send(files.data);
   } catch(err) {
     res.send(err);
   }
@@ -50,4 +49,5 @@ app.post(`/${GITHUB_PATH}/:file`, async (req, res) => {
     res.send(err);
   }
 })
+app.use('/hearsay', hearsayAdmin);
 app.listen(process.env.PORT || 7764)
