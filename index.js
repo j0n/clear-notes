@@ -46,7 +46,6 @@ app.get(`/${GITHUB_PATH}/:file`, isAuthorized, async (req, res) => {
 
 app.post(`/auth/login`, (req, res) => {
   const { password = '', email = '' } = req.body;
-  console.log({password, email});
   if (password === process.env.PASSWORD && email === process.env.EMAIL) {
     return res.json({ token: sign(email) });
   }
