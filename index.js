@@ -18,11 +18,21 @@ app.use(fileUpload({
     limits: { fileSize: 50 * 1024 * 1024 },
 }));
 app.use(express.static('static'))
+app.use(['/login', '/n/*'], express.static('static'))
 app.use('/h', express.static(__dirname + '/h'))
 
 app.post('/image', isAuthorized, async (req, res) => {
   const { file } = req.files;
   await add(`image/${file.name}`, `Uploading ${file.name}`, file.data.toString('base64'));
+})
+
+app.get(`/${GITHUB_PATH}/list`, isAuthorized, async (req, res) => {
+  try {
+    const files = await list(`/${GITHUB_PATH}`);
+    res.send(files.data);
+  } catch(err) {
+    res.send(err);
+  }
 })
 app.get(`/${GITHUB_PATH}/:file`, isAuthorized, async (req, res) => {
   const { file } = req.params;
@@ -33,14 +43,17 @@ app.get(`/${GITHUB_PATH}/:file`, isAuthorized, async (req, res) => {
     res.json({content: ''});
   }
 })
-app.get('/list', isAuthorized, async (req, res) => {
-  try {
-    const files = await list(`/${GITHUB_PATH}`);
-    res.send(files.data);
-  } catch(err) {
-    res.send(err);
+
+app.post(`/auth/login`, (req, res) => {
+  const { password = '', email = '' } = req.body;
+  console.log({password, email});
+  if (password === process.env.PASSWORD && email === process.env.EMAIL) {
+    return res.json({ token: sign(email) });
   }
-})
+  res.status(401).json({
+    error: 'Wrong credentials'
+  });
+});
 app.post(`/${GITHUB_PATH}/:file`, isAuthorized, async (req, res) => {
   const { file } = req.params;
   const { content = '' } = req.body;
@@ -52,16 +65,6 @@ app.post(`/${GITHUB_PATH}/:file`, isAuthorized, async (req, res) => {
   }
 });
 
-app.post('/login', (req, res) => {
-  const { password = '', email = '' } = req.body;
-  console.log({password, email});
-  if (password === process.env.PASSWORD && email === process.env.EMAIL) {
-    return res.json({ token: sign(email) });
-  }
-  res.status(401).json({
-    error: 'Wrong credentials'
-  });
-});
 
 app.use('/hearsay', hearsayAdmin);
 app.listen(process.env.PORT || 7764)
