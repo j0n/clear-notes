@@ -5,6 +5,7 @@ const cors = require('cors');
 const fileUpload = require('express-fileupload');
 const bodyParser = require('body-parser');
 const hearsayAdmin = require('./routes/hearsay-admin');
+const { sign, isAuthorized } = require('./lib/auth');
 
 
 const { add, get, list } = require('./lib/github')('j0n', 'notes');
@@ -17,12 +18,13 @@ app.use(fileUpload({
     limits: { fileSize: 50 * 1024 * 1024 },
 }));
 app.use(express.static('static'))
+app.use('/h', express.static(__dirname + '/h'))
 
-app.post('/image', async (req, res) => {
+app.post('/image', isAuthorized, async (req, res) => {
   const { file } = req.files;
   await add(`image/${file.name}`, `Uploading ${file.name}`, file.data.toString('base64'));
 })
-app.get(`/${GITHUB_PATH}/:file`, async (req, res) => {
+app.get(`/${GITHUB_PATH}/:file`, isAuthorized, async (req, res) => {
   const { file } = req.params;
   try {
     const content = await get(`${GITHUB_PATH}/${file}`)
@@ -31,7 +33,7 @@ app.get(`/${GITHUB_PATH}/:file`, async (req, res) => {
     res.json({content: ''});
   }
 })
-app.get('/list', async (req, res) => {
+app.get('/list', isAuthorized, async (req, res) => {
   try {
     const files = await list(`/${GITHUB_PATH}`);
     res.send(files.data);
@@ -39,7 +41,7 @@ app.get('/list', async (req, res) => {
     res.send(err);
   }
 })
-app.post(`/${GITHUB_PATH}/:file`, async (req, res) => {
+app.post(`/${GITHUB_PATH}/:file`, isAuthorized, async (req, res) => {
   const { file } = req.params;
   const { content = '' } = req.body;
   try {
@@ -48,6 +50,18 @@ app.post(`/${GITHUB_PATH}/:file`, async (req, res) => {
   } catch(err) {
     res.send(err);
   }
-})
+});
+
+app.post('/login', (req, res) => {
+  const { password = '', email = '' } = req.body;
+  console.log({password, email});
+  if (password === process.env.PASSWORD && email === process.env.EMAIL) {
+    return res.json({ token: sign(email) });
+  }
+  res.status(401).json({
+    error: 'Wrong credentials'
+  });
+});
+
 app.use('/hearsay', hearsayAdmin);
 app.listen(process.env.PORT || 7764)

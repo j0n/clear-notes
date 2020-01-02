@@ -56,6 +56,24 @@
   border-radius: 5px;
 }
 
+._3S8-76bc6lY3eLMX52PsCy {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+}
+@media screen and (max-width: 500px) {
+  ._3S8-76bc6lY3eLMX52PsCy {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+._3S8-76bc6lY3eLMX52PsCy a {
+  color: #333;
+  text-decoration: none;
+  font-size: 1rem;
+  text-align: center;
+  margin: 5px;
+  padding: 5px;
+}
+
 body {
   background: var(--white);
   font-family: 'Source Sans Pro', sans-serif;
