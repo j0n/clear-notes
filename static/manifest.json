@@ -1,0 +1,12 @@
+{
+  "name": "Clear Notes",
+  "short_name": "Clear Notes",
+  "lang": "sv",
+  "start_url": "/",
+  "display": "standalone",
+  "icons": [
+    {
+      "src": "icon.png"
+    }
+  ]
+}
