@@ -65,5 +65,5 @@ app.post(`/${GITHUB_PATH}/:file`, isAuthorized, async (req, res) => {
 });
 
 
-app.use('/hearsay', hearsayAdmin);
+app.use('/hearsay', isAuthorized, hearsayAdmin);
 app.listen(process.env.PORT || 7764)
