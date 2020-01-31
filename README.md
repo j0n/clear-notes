@@ -3,8 +3,11 @@ A minimal notes app, using github as storage
 
 ## Setup
 `git clone`
+
 `cd clear-notes`
+
 `npm i`
+
 `cp env.sample .env`
 
 ## Github setup
@@ -13,10 +16,14 @@ A minimal notes app, using github as storage
 * Update `.env` with your githubm username `GITHUB_USE=your-github-username`
 * Update `.env` with a repo to store notes in `GITHUB_REPO=your-repo-to-storen-notes-in`
 
-
-
-
-
+## Credential setup
+Minimal fuzz credential.
+Set a prefred username/email and password in your `.env` and a secret uses to encrypt your token
+```
+  PASSWORD=a-password-to-use-login-to-clear-notes
+  EMAIL=an-mail-to-use-login-to-clear-notes
+  TOKEN_SECRET=secret-used-to-hash-token
+```
 
 ## full .env should look somethin like this
 ```
@@ -29,4 +36,10 @@ A minimal notes app, using github as storage
   TOKEN_SECRET=secret-used-to-hash-token
 ```
 
+## Run app
+`node .`
+
+## Deploy to heroku
+Setup heroku according to their guides.
+Set the variables from `.env` as `Config Var`
 
