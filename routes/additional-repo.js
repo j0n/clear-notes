@@ -1,7 +1,9 @@
 const express = require('express');
 const routes = require('express').Router();
 const btoa = require('btoa-lite');
-const { add, get, list } = require('../lib/github')('j0n', 'hearsay.se');
+const { GITHUB_ADDITIONAL_REPO, GITHUB_USER } = process.env;
+const github = require('../lib/github');
+const { add, get, list } = github(GITHUB_USER, GITHUB_ADDITIONAL_REPO);
 
 routes.get('/list', async (req, res) => {
   try {

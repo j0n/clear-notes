@@ -4,12 +4,13 @@ const express = require('express');
 const cors = require('cors');
 const fileUpload = require('express-fileupload');
 const bodyParser = require('body-parser');
-const hearsayAdmin = require('./routes/hearsay-admin');
+
+const additionalRepo = require('./routes/additional-repo');
 const { sign, isAuthorized } = require('./lib/auth');
+const github = require('./lib/github');
 
-
-const { add, get, list } = require('./lib/github')('j0n', 'notes');
-const { GITHUB_PATH = 'note' } = process.env;
+const { GITHUB_PATH = 'note', GITHUB_REPO, GITHUB_USER } = process.env;
+const { add, get, list } = github(GITHUB_USER, GITHUB_REPO);
 
 const app = express();
 app.use(bodyParser.json());
@@ -65,5 +66,5 @@ app.post(`/${GITHUB_PATH}/:file`, isAuthorized, async (req, res) => {
 });
 
 
-app.use('/hearsay', isAuthorized, hearsayAdmin);
+app.use('/hearsay', isAuthorized, additionalRepo);
 app.listen(process.env.PORT || 7764)
