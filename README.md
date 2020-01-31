@@ -30,7 +30,6 @@ Set a prefred username/email and password in your `.env` and a secret uses to en
   GITHUB_TOKEN=your-personal-github-token
   GITHUB_USER=your-github-username
   GITHUB_REPO=your-repo-to-storen-notes-in
-  GITHUB_ADDITIONAL_REPO=hearsay.se
   PASSWORD=a-password-to-use-login-to-clear-notes
   EMAIL=an-mail-to-use-login-to-clear-notes
   TOKEN_SECRET=secret-used-to-hash-token
