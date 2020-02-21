@@ -1,0 +1,46 @@
+{
+  "env": {
+    "amd": true,
+    "browser": true,
+    "es6": true,
+    "node": true,
+  },
+  "extends": [
+    "eslint:recommended",
+  ],
+  "parserOptions": {
+    "sourceType": "module",
+    "ecmaVersion": 8,
+    "ecmaFeatures": {
+      "experimentalObjectRestSpread": true
+    }
+  },
+  "globals": {
+    node: true,
+    __DEV__: TRUE
+  },
+  "plugins": [],
+  "rules": {
+    "func-style": [1, "expression", { "allowArrowFunctions": true }],
+    "comma-dangle": ['error', 'always-multiline'],
+    "no-extra-semi": 2,
+    "no-undef-init": 2,
+    "no-undef": 2,
+    "no-unused-vars": 2,
+    "no-var": 2,
+    "semi": [2, "never"],
+    "no-use-before-define": ["error", { "variables": false }],
+    "import/no-unresolved": 2,
+    "indent": [2, 2, { "SwitchCase": 1 }],
+    "quotes": [2, "single", "avoid-escape"],
+    "react/prop-types": 0,
+    "eol-last": 2,
+    "no-trailing-spaces": 2,
+    "no-console": 0,
+  },
+  "settings": {
+    "import/resolver": {
+      "babel-module": {}
+    }
+  }
+}
