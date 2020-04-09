@@ -6,6 +6,7 @@ const fileUpload = require('express-fileupload')
 const bodyParser = require('body-parser')
 
 const additionalRepo = require('./routes/additional-repo')
+const betlehem = require('./routes/betlehem-repo')
 const { sign, isAuthorized } = require('./lib/auth')
 const github = require('./lib/github')
 
@@ -69,4 +70,5 @@ app.post(`/${GITHUB_PATH}/:file`, isAuthorized, async (req, res) => {
 
 
 app.use('/hearsay', isAuthorized, additionalRepo)
+app.use('/bethlem', betlehem)
 app.listen(process.env.PORT || 7764)
