@@ -28,9 +28,7 @@ routes.post('/:file', async (req, res) => {
   const { content = '', asJSON = false } = req.body
   let saveContent = btoa(content)
 
-  console.log('SAVE', asJSON)
   if (asJSON) {
-    console.log('AS JSON');
     saveContent = btoa(JSON.stringify(content, false, 4))
   }
   try {
