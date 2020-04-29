@@ -5,6 +5,7 @@ const {
   GITHUB_ADDITIONAL_REPO_PATH = '/data',
   GITHUB_USER,
 } = process.env
+console.log({GITHUB_ADDITIONAL_REPO_PATH})
 const github = require('../lib/github')
 const { add, get, list } = github(GITHUB_USER, GITHUB_ADDITIONAL_REPO)
 
