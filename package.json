@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "jest --testTimeout=10000",
+    "test": "cross-env EMAIL=test@example.com PASSWORD=test TOKEN_SECRET=secret jest --testTimeout=10000",
     "lint": "eslint index.js"
   },
   "author": "",
@@ -21,6 +21,7 @@
     "utf8": "^3.0.0"
   },
   "devDependencies": {
+    "cross-env": "^7.0.2",
     "eslint": "^7.2.0",
     "eslint-cli": "^1.1.1",
     "eslint-plugin-jest": "^23.13.2",
