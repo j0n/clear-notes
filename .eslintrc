@@ -17,9 +17,10 @@
   },
   "globals": {
     node: true,
+    "jest/globals": true,
     __DEV__: TRUE
   },
-  "plugins": [],
+  "plugins": ["jest"],
   "rules": {
     "func-style": [1, "expression", { "allowArrowFunctions": true }],
     "comma-dangle": ['error', 'always-multiline'],

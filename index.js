@@ -71,4 +71,9 @@ app.post(`/${GITHUB_PATH}/:file`, isAuthorized, async (req, res) => {
 
 app.use('/hearsay', isAuthorized, additionalRepo)
 app.use('/bethlem', betlehem)
-app.listen(process.env.PORT || 7764)
+const server = app.listen(process.env.PORT || 7764)
+
+module.exports = {
+  app,
+  server,
+}
