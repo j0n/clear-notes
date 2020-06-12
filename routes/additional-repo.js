@@ -10,8 +10,10 @@ const { add, get, list } = github(GITHUB_USER, GITHUB_ADDITIONAL_REPO)
 
 routes.get('/list', async (req, res) => {
   try {
-    const files = await list('data/posts')
-    res.send(files.data)
+    const files = await list('data')
+    const { data } = files
+    const posts = await list(data[0].path)
+    res.send(posts.data)
   } catch(err) {
     res.send(err)
   }
