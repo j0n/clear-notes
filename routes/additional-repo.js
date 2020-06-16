@@ -13,6 +13,7 @@ routes.get('/list', async (req, res) => {
     const files = await list('data/posts')
     res.send(files.data)
   } catch(err) {
+    console.log({err})
     res.send(err)
   }
 })
@@ -23,6 +24,7 @@ routes.get('/:file', async (req, res) => {
     const content = await get(`data/posts/${file}.json`)
     res.json({data: content})
   } catch (err) {
+    console.log({err})
     res.json({content: ''})
   }
 })
@@ -34,6 +36,7 @@ routes.post('/:file', async (req, res) => {
     await add(`data/posts/${file}.json`, `upsert ${file}`, btoa(content))
     res.send('done')
   } catch(err) {
+    console.log({err})
     console.log(err)
     res.status(500)
   }

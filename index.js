@@ -34,6 +34,7 @@ app.get(`/${GITHUB_PATH}/list`, isAuthorized, async (req, res) => {
     const files = await list(`/${GITHUB_PATH}`)
     res.send(files.data)
   } catch(err) {
+    console.log({err})
     res.send(err)
   }
 })
@@ -43,6 +44,7 @@ app.get(`/${GITHUB_PATH}/:file`, isAuthorized, async (req, res) => {
     const content = await get(`${GITHUB_PATH}/${file}`)
     res.json({content})
   } catch (err) {
+    console.log({err})
     res.json({content: ''})
   }
 })
@@ -64,6 +66,7 @@ app.post(`/${GITHUB_PATH}/:file`, isAuthorized, async (req, res) => {
     await add(`${GITHUB_PATH}/${fileName}`, `upsert ${fileName}`, btoa(content))
     res.send('done')
   } catch(err) {
+    console.log({err})
     res.send(err)
   }
 })
