@@ -6,7 +6,7 @@ const {
 } = process.env
 // const BASE_PATH = '/data/posts' // decodeURIComponent(GITHUB_ADDITIONAL_REPO_PATH)
 const github = require('../lib/github')
-const { add, get, list } = github(GITHUB_USER, GITHUB_ADDITIONAL_REPO)
+const { add, addImage, get, list } = github(GITHUB_USER, GITHUB_ADDITIONAL_REPO)
 
 routes.get('/list', async (req, res) => {
   try {
@@ -39,6 +39,15 @@ routes.post('/:file', async (req, res) => {
     console.log({err})
     console.log(err)
     res.status(500)
+  }
+})
+routes.post('/upload/image', async (req, res) => {
+  const { url, path } = req.body
+  try {
+    const data = await addImage(url, `data/posts/${path}`)
+    res.send({ url: data })
+  } catch (err) {
+    res.status(500).send(err)
   }
 })
 
