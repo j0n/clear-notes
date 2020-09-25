@@ -26,6 +26,6 @@
     "eslint-cli": "^1.1.1",
     "eslint-plugin-jest": "^23.13.2",
     "jest": "^26.0.1",
-    "supertest": "^4.0.2"
+    "supertest": "^5.0.0"
   }
 }
