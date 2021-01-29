@@ -24,7 +24,6 @@ routes.get('/:file', async (req, res) => {
     const content = await get(`data/posts/${file}.json`)
     res.json({data: content})
   } catch (err) {
-    console.log({err})
     res.json({content: ''})
   }
 })
@@ -36,12 +35,22 @@ routes.post('/:file', async (req, res) => {
     await add(`data/posts/${file}.json`, `upsert ${file}`, btoa(content))
     res.send('done')
   } catch(err) {
-    console.log({err})
     console.log(err)
     res.status(500)
   }
 })
+
 routes.post('/upload/image', async (req, res) => {
+  if (req.files) {
+    const image = req.files['myImage']
+    if (image) {
+      const { path } = req.body
+      const imagePath = `data/posts/${path}`
+      await add(imagePath, 'Upload my image', image.data.toString('base64'))
+      return res.send({path: imagePath})
+    }
+  }
+
   const { url, path } = req.body
   try {
     const data = await addImage(url, `data/posts/${path}`)

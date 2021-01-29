@@ -14,10 +14,10 @@ const { GITHUB_PATH = 'note', GITHUB_REPO, GITHUB_USER } = process.env
 const { add, get, list } = github(GITHUB_USER, GITHUB_REPO)
 
 const app = express()
-app.use(bodyParser.json())
+app.use(bodyParser.json({ limit: '50mb' }))
 app.use(cors())
 app.use(fileUpload({
-  limits: { fileSize: 50 * 1024 * 1024 },
+  limits: { fileSize: 500000000 * 1024 * 1024 },
 }))
 app.use(express.static('static'))
 app.use(['/login', '/n/*'], express.static('static'))
