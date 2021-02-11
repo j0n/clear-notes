@@ -18,6 +18,28 @@ routes.get('/list', async (req, res) => {
   }
 })
 
+routes.get('/:folder/:file', async (req, res) => {
+  const { file, folder } = req.params
+  try {
+    const content = await get(`data/${folder}/${file}.json`)
+    res.json({data: content})
+  } catch (err) {
+    res.json({content: ''})
+  }
+})
+
+routes.post('/:file', async (req, res) => {
+  const { file, folder } = req.params
+  const { content = '' } = req.body
+  try {
+    await add(`data/${folder}/${file}.json`, `upsert ${folder}/${file}`, btoa(content))
+    res.send('done')
+  } catch(err) {
+    console.log(err)
+    res.status(500)
+  }
+})
+
 routes.get('/:file', async (req, res) => {
   const { file } = req.params
   try {
