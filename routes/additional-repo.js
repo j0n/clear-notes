@@ -18,21 +18,21 @@ routes.get('/list', async (req, res) => {
   }
 })
 
-routes.get('/:folder/:file', async (req, res) => {
-  const { file, folder } = req.params
+routes.get('/playlists/:file', async (req, res) => {
+  const { file } = req.params
   try {
-    const content = await get(`data/${folder}/${file}.json`)
-    res.json({data: content})
+    const content = await get(`playlists/${file}.json`)
+    res.json(content)
   } catch (err) {
     res.json({content: ''})
   }
 })
 
-routes.post('/:file', async (req, res) => {
-  const { file, folder } = req.params
-  const { content = '' } = req.body
+routes.post('/playlists/:file', async (req, res) => {
+  const { file } = req.params
+  const content = JSON.stringify(req.body || [], null, 2)
   try {
-    await add(`data/${folder}/${file}.json`, `upsert ${folder}/${file}`, btoa(content))
+    await add(`playlists/${file}.json`, `upsert playlists/${file}`, btoa(content))
     res.send('done')
   } catch(err) {
     console.log(err)
