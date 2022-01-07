@@ -7,6 +7,40 @@ const {
 // const BASE_PATH = '/data/posts' // decodeURIComponent(GITHUB_ADDITIONAL_REPO_PATH)
 const github = require('../lib/github')
 const { add, addImage, get, list } = github(GITHUB_USER, GITHUB_ADDITIONAL_REPO)
+let cache = []
+const fetchAll = async () => {
+  const files = await list('data/posts')
+  const allData = []
+  for (const file in files.data) {
+    const { path, type } = files.data[file]
+    if (type !== 'file') {
+      continue
+    }
+    try {
+      console.log(`loading ${path}`)
+      const content = await get(path)
+      allData.push({ data: JSON.parse(content) })
+    } catch (err) {
+      console.log('failed fetching content', err)
+    }
+  }
+  console.log('All Data loaded')
+  cache = allData
+}
+const updateItemInCache = async (id, path) => {
+  const content = await get(path)
+  console.log('update item', id, content)
+  const index = cache.findIndex(item => item.data.id === id)
+  if (index !== -1) {
+    cache[index] = { data: JSON.parse(content) }
+  } else {
+    cache.push({ data: JSON.parse(content) })
+  }
+}
+
+if (!process.env.IS_TEST) {
+  fetchAll()
+}
 
 routes.get('/list', async (req, res) => {
   try {
@@ -15,6 +49,19 @@ routes.get('/list', async (req, res) => {
   } catch(err) {
     console.log({err})
     res.send(err)
+  }
+})
+
+routes.get('/getAll', async (req, res) => {
+  try {
+    const { query: { force } } = req
+    if (force) {
+      await fetchAll()
+    }
+    res.json(cache)
+  } catch(err) {
+    console.log({err})
+    res.send('err')
   }
 })
 
@@ -54,8 +101,10 @@ routes.post('/:file', async (req, res) => {
   const { file } = req.params
   const { content = '' } = req.body
   try {
-    await add(`data/posts/${file}.json`, `upsert ${file}`, btoa(content))
-    const content = await get(`data/posts/${file}.json`)
+    console.log('UPDATE', file)
+    const path = `data/posts/${file}.json`
+    await add(path, `upsert ${file}`, btoa(content))
+    await updateItemInCache(file, path)
     res.json({ data: content })
   } catch(err) {
     console.log(err)
