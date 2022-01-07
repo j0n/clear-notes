@@ -55,7 +55,8 @@ routes.post('/:file', async (req, res) => {
   const { content = '' } = req.body
   try {
     await add(`data/posts/${file}.json`, `upsert ${file}`, btoa(content))
-    res.send('done')
+    const content = await get(`data/posts/${file}.json`)
+    res.json({ data: content })
   } catch(err) {
     console.log(err)
     res.status(500)
