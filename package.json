@@ -2,7 +2,7 @@
   "name": "hearsay.se",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "src/index.js",
   "scripts": {
     "test": "cross-env EMAIL=test@example.com PASSWORD=test TOKEN_SECRET=secret IS_TEST=true jest --testTimeout=10000",
     "lint": "eslint index.js"

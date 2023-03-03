@@ -1,5 +1,6 @@
 const { createClient } = require('redis')
 const { REDIS_URL } = process.env
+console.log({ REDIS_URL })
 
 let client
 ;(async () => {
