@@ -5,7 +5,11 @@
   "main": "src/index.js",
   "scripts": {
     "test": "cross-env EMAIL=test@example.com PASSWORD=test TOKEN_SECRET=secret IS_TEST=true jest --testTimeout=10000",
-    "lint": "eslint index.js"
+    "lint": "eslint index.js",
+    "build": "docker build --tag eu.gcr.io/clear-notes-001/app-o --platform linux/amd64 .",
+    "push": "docker push eu.gcr.io/clear-notes-001/app-o",
+    "deploy": "gcloud run deploy --image eu.gcr.io/clear-notes-001/app-o",
+    "out": "npm run build & npm run push & npm run deploy"
   },
   "author": "",
   "license": "ISC",
