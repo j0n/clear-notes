@@ -13,7 +13,7 @@ A minimal notes app, using github as storage
 ## Github setup
 * Create a personal access token to your github account https://github.com/settings/tokens
 * Update `.env` with your personal token `GITHUB_TOKEN=your-personal-github-token`
-* Update `.env` with your githubm username `GITHUB_USE=your-github-username`
+* Update `.env` with your githubm username `GITHUB_USER=your-github-username`
 * Update `.env` with a repo to store notes in `GITHUB_REPO=your-repo-to-storen-notes-in`
 
 ## Credential setup

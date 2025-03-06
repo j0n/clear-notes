@@ -142,6 +142,17 @@ routes.post('/:file', async (req, res) => {
   }
 })
 
+routes.get('/image/:path', async (req, res) => {
+  const { path } = req.params
+  const imagePath = `data/posts/${path}`
+  try {
+    const content = await get(imagePath, false)
+    res.send(content)
+  } catch (err) {
+    res.status(500).send(err)
+  }
+})
+
 routes.post('/upload/image', async (req, res) => {
   if (req.files) {
     const image = req.files['myImage']

@@ -1,4 +1,5 @@
-const request = require('supertest')
+/* global describe, it, expect */
+require('dotenv').config()
 const btoa = require('btoa-lite')
 const {
   GITHUB_REPO,
@@ -18,12 +19,12 @@ if (GITHUB_USER) {
       expect(posts).toHaveProperty('data')
     })
     it('get', async () => {
-      const content = await get('data/posts/001.json')
+      const content = await get('data/posts/036-teest.json')
       expect(content).not.toBe(null)
-      expect(JSON.parse(content)).toHaveProperty('date')
+      expect(JSON.parse(content)).toHaveProperty('title')
     })
     it('update', async () => {
-      const content = '{\"content\":\"\",\"title\":\"Hello\",\"published\":false,\"slug\":\"036-teest\",\"key\":\"036-teest\",\"id\":\"036-teest\"}'
+      const content = '{"content":"","title":"Hello","published":false,"slug":"036-teest","key":"036-teest","id":"036-teest"}'
       try {
         const response = await add('data/posts/036-teest.json', 'Test update', btoa(content))
         expect(response).not.toBe(null)

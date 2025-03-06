@@ -1,3 +1,5 @@
+/* global describe, it, expect, afterAll */
+
 const request = require('supertest')
 const { app, server } = require('../index')
 
@@ -20,7 +22,7 @@ describe('Post Endpoints', () => {
       .post('/auth/login')
       .send({
         password: PASSWORD,
-        email: EMAIL
+        email: EMAIL,
       })
     expect(res.body.token).not.toBe(undefined)
     expect(res.statusCode).toEqual(200)

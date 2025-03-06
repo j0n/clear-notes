@@ -100,12 +100,15 @@ module.exports = (owner, repo) => {
       sha,
     }
   }
-  const get = async (path) => {
+  const get = async (path, toUtf8 = true) => {
     const response = await getContent(path)
     const { data } = response
     const { content } = data
     const buff = new Buffer(content, 'base64')
-    return buff.toString('utf8')
+    if (toUtf8) {
+      return buff.toString('utf8')
+    }
+    return buff
   }
   const list = async (path) => {
     return await getContent(path)

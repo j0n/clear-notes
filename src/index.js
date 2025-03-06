@@ -11,7 +11,6 @@ const { sign, isAuthorized } = require('./lib/auth')
 const github = require('./lib/github')
 
 const { GITHUB_PATH = 'note', GITHUB_REPO, GITHUB_USER } = process.env
-console.log({ GITHUB_PATH })
 const { add, get, list } = github(GITHUB_USER, GITHUB_REPO)
 
 const app = express()
